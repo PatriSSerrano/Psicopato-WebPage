@@ -1,0 +1,45 @@
+.products-page {
+    padding: 80px 20px;
+    text-align: center;
+    background-color: #ffffff;
+
+    &__title {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        color: #ff6a00; /* Tu naranja de marca */
+        margin-bottom: 50px;
+    }
+
+    &__grid {
+        display: grid;
+        /* Magia pura: crea columnas automáticas que se adaptan a móviles y PC solas */
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto 60px auto;
+    }
+
+    &__img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover; /* Para que todas las fotos midan igual sin deformarse */
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.05); /* Efecto zoom elegante al pasar el ratón */
+        }
+    }
+
+    &__btn {
+        background-color: #ff6a00;
+        color: white;
+        text-decoration: none;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+}

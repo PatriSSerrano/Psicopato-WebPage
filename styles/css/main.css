@@ -1,0 +1,516 @@
+@charset "UTF-8";
+/* 1. Abstracts (Variables y Mixins primero) */
+/* --- _variables.scss --- */
+/* 2. Base (El reseteo) */
+/* --- RESETEO BÁSICO --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+} /* Selector universal, aplicamos fuentes globalmente */
+html {
+  font-size: 1rem; /* Establece la base estándar de 16px recomendada*/
+}
+
+/* 3. Layout (Estructura general) */
+/* 1. Abstracts (Variables y Mixins primero) */
+.header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header__bar {
+  background-color: #ff6a00;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 20px;
+  /* ¡La regla de tablet se mete directamente aquí! */
+}
+@media (max-width: 900px) {
+  .header__bar {
+    height: auto;
+    flex-wrap: wrap;
+    padding: 10px 20px;
+    gap: 15px;
+  }
+}
+@media (max-width: 600px) {
+  .header__bar {
+    justify-content: space-between;
+  }
+}
+.header__logo-box {
+  background-color: #ffffff;
+  height: 100%;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Usamos el Mixin */
+}
+@media (max-width: 900px) {
+  .header__logo-box {
+    height: 60px;
+    padding: 0 15px;
+  }
+}
+.header__logo {
+  height: 90px;
+  width: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
+  z-index: 10;
+}
+@media (max-width: 900px) {
+  .header__logo {
+    height: 40px;
+  }
+}
+.header__left-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: 20px;
+}
+.header__app-btn {
+  background-color: #ffcc99;
+  color: #ff6a00;
+  text-decoration: none;
+  padding: 10px 18px;
+  font-weight: bold;
+  font-size: 0.875em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .header__app-btn {
+    display: none;
+  }
+}
+.header__brand {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.75em;
+  letter-spacing: 1px;
+}
+@media (max-width: 600px) {
+  .header__brand {
+    font-size: 1.25em;
+  }
+}
+.header__search {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+}
+@media (max-width: 900px) {
+  .header__search {
+    order: 5;
+    width: 100%;
+    margin-top: 5px;
+  }
+}
+.header__search-input { /* Se compila como .header__search-input */
+  width: 100%;
+  max-width: 650px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  background-color: #ffffff;
+  color: #333333;
+  outline: none;
+  font-size: 0.9375em;
+}
+.header__search-input::-moz-placeholder {
+  color: #999999;
+}
+.header__search-input::placeholder {
+  color: #999999;
+}
+@media (max-width: 900px) {
+  .header__search-input {
+    width: 100%;
+  }
+}
+.header__icons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+@media (max-width: 900px) {
+  .header__icons {
+    padding-right: 0;
+  }
+}
+@media (max-width: 600px) {
+  .header__icons {
+    gap: 15px;
+  }
+}
+.header__icon {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.header__icon:hover {
+  transform: scale(1.1);
+}
+.header__icon--profile {
+  width: 52px;
+  height: 52px;
+}
+@media (max-width: 600px) {
+  .header__icon--profile {
+    width: 32px;
+    height: 32px;
+  }
+}
+.header__icon--favorites {
+  width: 62px;
+  height: 62px;
+}
+@media (max-width: 600px) {
+  .header__icon--favorites {
+    width: 38px;
+    height: 38px;
+  }
+}
+.header__icon--cart {
+  width: 42px;
+  height: 42px;
+}
+@media (max-width: 600px) {
+  .header__icon--cart {
+    width: 28px;
+    height: 28px;
+  }
+}
+.header__action { /*decirle a CSS que las cajitas (.header__dropdown) deben flotar justo debajo de su padre (.header__action) y que, por defecto, deben ser invisibles.*/
+  position: relative; /* Convierte a este contenedor en el "ancla" */
+  display: flex; /* Mantiene el icono perfectamente alineado */
+  align-items: center;
+  cursor: pointer; /* Hace que salga la manita al pasar el ratón */
+}
+.header__dropdown {
+  position: absolute;
+  top: 130%; /* Se coloca justo debajo del botón */
+  right: 0; /* Se alinea a la derecha */
+  background-color: #ffffff;
+  color: #333333;
+  min-width: 220px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Sombra elegante */
+  z-index: 200;
+  /* Magia de invisibilidad y animación */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px); /* Empieza un poco más abajo */
+  transition: all 0.3s ease; /* Transición suave */
+}
+.header__dropdown p {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: #999999;
+}
+
+.header__dropdown--active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0); /* Sube a su posición original */
+}
+.header__dropdown-link {
+  display: block;
+  padding: 10px;
+  color: #333333;
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+.header__dropdown-link:hover {
+  background-color: #f5f5f5;
+  color: #ff6a00;
+}
+
+/* --- PIE DE PÁGINA --- */
+footer {
+  background-color: #ff6a00;
+  color: #fff;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.footer__content .footer__title {
+  font-size: 1.75em;
+  margin-bottom: 15px;
+}
+
+.footer__content .footer__text {
+  font-size: 1em;
+  margin-bottom: 30px;
+  color: #fff;
+}
+
+.footer__link {
+  color: #000;
+  background-color: #fff;
+  text-decoration: none;
+  padding: 15px 40px;
+  border-radius: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: opacity 0.3s;
+}
+
+.footer__link:hover {
+  opacity: 0.8;
+}
+
+/* 4. Pages (El contenido de la página de inicio) */
+/* 1. Abstracts (Variables y Mixins primero) */
+.hero {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+.hero__images {
+  display: flex;
+  width: 100%;
+}
+.hero__image {
+  width: 33.333%;
+  height: auto;
+  display: block;
+}
+.hero__content {
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+.hero__title {
+  font-family: "Horizon", sans-serif;
+  font-size: 5rem;
+  margin: 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.7);
+}
+@media (max-width: 600px) {
+  .hero__title {
+    font-size: 2.2rem;
+  }
+}
+.hero__text--pastel {
+  color: #ffb669;
+}
+.hero__text--orange {
+  color: #ff6a00;
+}
+
+/* 1. Abstracts (Variables y Mixins primero) */
+.benefits {
+  display: flex;
+  justify-content: space-between;
+  padding: 80px 40px;
+  background-color: #ffffff;
+  width: 100%;
+}
+@media (max-width: 900px) {
+  .benefits {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+}
+.benefits__item {
+  width: 21.05%;
+  padding: 30px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 5px;
+}
+@media (max-width: 900px) {
+  .benefits__item {
+    width: 48%;
+  }
+}
+@media (max-width: 600px) {
+  .benefits__item {
+    width: 100%;
+  }
+}
+.benefits__item p {
+  font-size: 0.9375em;
+  font-weight: bold;
+  color: #ffffff;
+  line-height: 1.4;
+}
+.benefits__item--odd {
+  background-color: #ff9d3b;
+}
+.benefits__item--even {
+  background-color: #ffb669;
+}
+
+/* 1. Abstracts (Variables y Mixins primero) */
+.category {
+  display: flex;
+  width: 100%;
+  padding: 80px 40px;
+  gap: 50px;
+  background-color: #ffffff;
+  align-items: stretch;
+  /* Quitamos el subrayado feo por defecto de los links azules */
+}
+.category .category__link {
+  text-decoration: none;
+  color: inherit; /* Hereda el gris o naranja del category__item */
+  display: block; /* Hace que toda el área sea "clickeable", no solo las letras */
+}
+@media (max-width: 900px) {
+  .category {
+    flex-direction: column;
+    gap: 40px;
+    padding: 40px 20px;
+  }
+}
+.category--man .category__content {
+  margin-left: 70px;
+}
+.category__image {
+  flex: 1;
+  position: relative;
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .category__image {
+    width: 100%;
+    height: 500px;
+  }
+}
+.category__img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+  -o-object-position: center;
+     object-position: center;
+  border-radius: 4px;
+}
+.category__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 900px) {
+  .category__content {
+    width: 100%;
+  }
+}
+.category__title {
+  font-family: "Playfair Display";
+  font-size: 3.5rem;
+  color: #ff6a00;
+  margin-bottom: 40px;
+  font-weight: normal;
+}
+@media (max-width: 600px) {
+  .category__title {
+    font-size: 2.5rem;
+  }
+}
+.category__columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .category__columns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.category__column-title {
+  color: #ff6a00;
+  font-size: 1em;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: 1px;
+}
+.category__list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.category__item {
+  font-size: 0.875em;
+  color: #555555;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.category__item:hover {
+  color: #ff6a00;
+  text-decoration: underline;
+}
+
+.products-page {
+  padding: 80px 20px;
+  text-align: center;
+  background-color: #ffffff;
+}
+.products-page__title {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  color: #ff6a00; /* Tu naranja de marca */
+  margin-bottom: 50px;
+}
+.products-page__grid {
+  display: grid;
+  /* Magia pura: crea columnas automáticas que se adaptan a móviles y PC solas */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto 60px auto;
+}
+.products-page__img {
+  width: 100%;
+  height: 400px;
+  -o-object-fit: cover;
+     object-fit: cover; /* Para que todas las fotos midan igual sin deformarse */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+.products-page__img:hover {
+  transform: scale(1.05); /* Efecto zoom elegante al pasar el ratón */
+}
+.products-page__btn {
+  background-color: #ff6a00;
+  color: white;
+  text-decoration: none;
+  padding: 15px 30px;
+  border-radius: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}/*# sourceMappingURL=main.css.map */

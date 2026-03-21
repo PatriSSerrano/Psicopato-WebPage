@@ -1,0 +1,102 @@
+@use '../abstracts/variables' as *;
+
+.category {
+    display: flex;
+    width: 100%;
+    padding: 80px 40px;
+    gap: 50px;
+    background-color: $color-fondo;
+    align-items: stretch;
+
+    /* Quitamos el subrayado feo por defecto de los links azules */
+    .category__link {
+    text-decoration: none;
+    color: inherit; /* Hereda el gris o naranja del category__item */
+    display: block; /* Hace que toda el área sea "clickeable", no solo las letras */
+    }
+
+    @media (max-width: 900px) {
+        flex-direction: column;
+        gap: 40px;
+        padding: 40px 20px;
+    }
+
+    &--man {
+        .category__content { margin-left: 70px; }
+    }
+
+    &__image {
+        flex: 1;
+        position: relative;
+        margin: 0;
+
+        @media (max-width: 900px) {
+            width: 100%;
+            height: 500px;
+        }
+    }
+
+    &__img {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        object-fit: contain;
+        object-position: center;
+        border-radius: 4px;
+    }
+
+    &__content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        @media (max-width: 900px) { width: 100%; }
+    }
+
+    &__title {
+        font-family: 'Playfair Display';
+        font-size: 3.5rem;
+        color: $color-primario;
+        margin-bottom: 40px;
+        font-weight: normal;
+
+        @media (max-width: 600px) { font-size: 2.5rem; }
+    }
+
+    &__columns {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        list-style-type: none;
+        padding: 0; margin: 0;
+
+        @media (max-width: 900px) { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    &__column-title {
+        color: $color-primario;
+        font-size: 1em;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        font-family: $fuente-principal;
+        letter-spacing: 1px;
+    }
+
+    &__list {
+        list-style-type: none;
+        padding: 0; margin: 0;
+    }
+
+    &__item {
+        font-size: 0.875em;
+        color: #555555;
+        margin-bottom: 12px;
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &:hover {
+            color: $color-primario;
+            text-decoration: underline;
+        }
+    }
+}

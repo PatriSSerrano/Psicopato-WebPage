@@ -1,0 +1,12 @@
+/* --- _variables.scss --- */
+$color-primario: #ff6a00;
+$color-fondo: #ffffff;
+$color-texto: #333333;
+$color-gris: #999999;
+$fuente-principal: 'Helvetica Neue', Arial, sans-serif;
+
+@mixin flex-centrado {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

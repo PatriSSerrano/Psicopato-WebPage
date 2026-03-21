@@ -1,0 +1,15 @@
+/* 1. Abstracts (Variables y Mixins primero) */
+@use 'abstracts/variables';
+
+/* 2. Base (El reseteo) */
+@use 'base/reset';
+
+/* 3. Layout (Estructura general) */
+@use 'layout/header';
+@use 'layout/footer';
+
+/* 4. Pages (El contenido de la página de inicio) */
+@use 'pages/hero';
+@use 'pages/benefits';
+@use 'pages/categorias'; 
+@use 'pages/products';

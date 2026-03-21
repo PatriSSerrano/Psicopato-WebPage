@@ -1,0 +1,37 @@
+@use '../abstracts/variables' as *;
+
+.benefits {
+    display: flex;
+    justify-content: space-between;
+    padding: 80px 40px;
+    background-color: $color-fondo;
+    width: 100%;
+
+    @media (max-width: 900px) {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    &__item {
+        width: 21.05%;
+        padding: 30px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border-radius: 5px;
+
+        @media (max-width: 900px) { width: 48%; }
+        @media (max-width: 600px) { width: 100%; }
+
+        p {
+            font-size: 0.9375em;
+            font-weight: bold;
+            color: $color-fondo;
+            line-height: 1.4;
+        }
+
+        &--odd { background-color: #ff9d3b; }
+        &--even { background-color: #ffb669; }
+    }
+}

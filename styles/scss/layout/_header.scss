@@ -1,0 +1,192 @@
+@use '../abstracts/variables' as *;
+
+.header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    &__bar {
+        background-color: $color-primario;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 20px;
+
+        /* ¡La regla de tablet se mete directamente aquí! */
+        @media (max-width: 900px) {
+            height: auto;
+            flex-wrap: wrap;
+            padding: 10px 20px;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            justify-content: space-between;
+        }
+    }
+
+    &__logo-box {
+        background-color: $color-fondo;
+        height: 100%;
+        padding: 0 20px;
+        @include flex-centrado; /* Usamos el Mixin */
+
+        @media (max-width: 900px) {
+            height: 60px;
+            padding: 0 15px;
+        }
+    }
+
+    &__logo {
+        height: 90px;
+        width: auto;
+        object-fit: contain;
+        z-index: 10;
+        
+        @media (max-width: 900px) { height: 40px; }
+    }
+
+    &__left-section {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-left: 20px;
+    }
+
+    &__app-btn {
+        background-color: #ffcc99;
+        color: $color-primario;
+        text-decoration: none;
+        padding: 10px 18px;
+        font-weight: bold;
+        font-size: 0.875em;
+        border-radius: 4px;
+        white-space: nowrap;
+
+        @media (max-width: 600px) { display: none; }
+    }
+
+    &__brand {
+        color: $color-fondo;
+        font-weight: bold;
+        font-size: 1.75em;
+        letter-spacing: 1px;
+
+        @media (max-width: 600px) { font-size: 1.25em; }
+    }
+
+    &__search {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        padding: 0 20px;
+
+        @media (max-width: 900px) {
+            order: 5;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        &-input { /* Se compila como .header__search-input */
+            width: 100%;
+            max-width: 650px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            background-color: $color-fondo;
+            color: $color-texto;
+            outline: none;
+            font-size: 0.9375em;
+
+            &::placeholder { color: $color-gris; }
+            @media (max-width: 900px) { width: 100%; }
+        }
+    }
+
+    &__icons {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+
+        @media (max-width: 900px) { padding-right: 0; }
+        @media (max-width: 600px) { gap: 15px; }
+    }
+
+    &__icon {
+        cursor: pointer;
+        transition: transform 0.2s;
+
+        &:hover { transform: scale(1.1); }
+
+        &--profile {
+            width: 52px; height: 52px;
+            @media (max-width: 600px) { width: 32px; height: 32px; }
+        }
+        &--favorites {
+            width: 62px; height: 62px;
+            @media (max-width: 600px) { width: 38px; height: 38px; }
+        }
+        &--cart {
+            width: 42px; height: 42px;
+            @media (max-width: 600px) { width: 28px; height: 28px; }
+        }
+    }
+    
+    &__action {/*decirle a CSS que las cajitas (.header__dropdown) deben flotar justo debajo de su padre (.header__action) y que, por defecto, deben ser invisibles.*/
+        position: relative; /* Convierte a este contenedor en el "ancla" */
+        display: flex;      /* Mantiene el icono perfectamente alineado */
+        align-items: center;
+        cursor: pointer;    /* Hace que salga la manita al pasar el ratón */
+    }
+
+    &__dropdown {
+        position: absolute;
+        top: 130%; /* Se coloca justo debajo del botón */
+        right: 0; /* Se alinea a la derecha */
+        background-color: $color-fondo;
+        color: $color-texto;
+        min-width: 220px;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15); /* Sombra elegante */
+        z-index: 200;
+        
+        /* Magia de invisibilidad y animación */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(15px); /* Empieza un poco más abajo */
+        transition: all 0.3s ease; /* Transición suave */
+
+        p {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: $color-gris;
+        }
+
+        /* Esta clase se la pondremos con JavaScript al hacer clic */
+        &--active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0); /* Sube a su posición original */
+        }
+    }
+
+    &__dropdown-link {
+        display: block;
+        padding: 10px;
+        color: $color-texto;
+        text-decoration: none;
+        font-size: 0.9rem;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: #f5f5f5;
+            color: $color-primario;
+        }
+    }
+}
