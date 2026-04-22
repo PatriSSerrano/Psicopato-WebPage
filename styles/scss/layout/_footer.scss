@@ -1,6 +1,51 @@
 /* --- PIE DE PÁGINA --- */
-footer { background-color: #ff6a00; color: #fff; text-align: center; padding: 80px 20px; }
-.footer__content .footer__title { font-size: 1.75em; margin-bottom: 15px; }
-.footer__content .footer__text { font-size: 1em; margin-bottom: 30px; color: #fff; }
-.footer__link { color: #000; background-color: #fff; text-decoration: none; padding: 15px 40px; border-radius: 30px; font-weight: bold; text-transform: uppercase; transition: opacity 0.3s; }
-.footer__link:hover { opacity: 0.8; }
+footer { 
+    background-color: #ff6a00; 
+    color: #fff; 
+    text-align: center; 
+    padding: 80px 20px; 
+
+    /* En móvil, reducimos el enorme espacio naranja de arriba y abajo */
+    @media (max-width: 600px) {
+        padding: 40px 15px;
+    }
+}
+
+.footer__content .footer__title { 
+    font-size: 1.75em; 
+    margin-bottom: 15px; 
+
+    /* Título más pequeño en móvil */
+    @media (max-width: 600px) { font-size: 1.3em; }
+}
+
+.footer__content .footer__text { 
+    font-size: 1em; 
+    margin-bottom: 30px; 
+    color: #fff; 
+
+    /* Texto más pequeño en móvil */
+    @media (max-width: 600px) { font-size: 0.85em; }
+}
+
+.footer__link { 
+    color: #000; 
+    background-color: #fff; 
+    text-decoration: none; 
+    padding: 15px 40px; 
+    border-radius: 30px; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    transition: opacity 0.3s; 
+    display: inline-block; /* Importante para que los márgenes funcionen bien */
+
+    /* Botón más compacto en móvil */
+    @media (max-width: 600px) { 
+        padding: 10px 25px; 
+        font-size: 0.85em;
+    }
+}
+
+.footer__link:hover { 
+    opacity: 0.8; 
+}
