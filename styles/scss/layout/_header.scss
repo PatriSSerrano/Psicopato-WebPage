@@ -16,28 +16,24 @@
         justify-content: space-between;
         padding-right: 20px;
 
-        /* Le quitamos el wrap para que NO se rompa en dos líneas */
+        /* ¡Volvemos a dejar que se rompa en dos líneas para que respiren! */
         @media (max-width: 900px) {
-            height: 60px; /* Un poco más bajita en móvil */
-            padding: 0 10px; /* Menos espacio a los lados */
-            gap: 10px; /* Elementos más juntitos */
-        }
-    }
-
-        @media (max-width: 600px) {
-            justify-content: space-between;
+            height: auto; /* Dejamos que crezca hacia abajo */
+            flex-wrap: wrap; /* Permite que la barra de búsqueda baje */
+            padding: 10px 15px;
+            gap: 10px;
         }
     }
 
     &__logo-box {
-        background-color: $color-fondo;
+        /* background-color: $color-fondo; <-- HEMOS BORRADO ESTO */
         height: 100%;
-        padding: 0 20px;
-        @include flex-centrado; /* Usamos el Mixin */
+        padding: 0 10px; /* Le quitamos un poco de relleno para ahorrar espacio */
+        @include flex-centrado;
 
         @media (max-width: 900px) {
             height: 60px;
-            padding: 0 15px;
+            padding: 0 5px;
         }
     }
 
@@ -57,7 +53,7 @@
         margin-left: 20px;
     }
 
-    &__app-btn {
+&__app-btn {
         background-color: #ffcc99;
         color: $color-primario;
         text-decoration: none;
@@ -66,12 +62,15 @@
         font-size: 0.875em;
         border-radius: 4px;
         text-align: center;
-        white-space: nowrap; /* Evita que el texto del botón se parta en dos */
+        white-space: nowrap;
         
-        /* ¡MAGIA! Quitamos el display:none y en su lugar lo hacemos pequeñito */
         @media (max-width: 900px) { 
             padding: 6px 10px; 
             font-size: 0.65em; 
+        }
+        /* Escondemos el botón en móviles diminutos para salvar los iconos */
+        @media (max-width: 400px) { 
+            display: none; 
         }
     }
 
@@ -91,7 +90,6 @@
         padding: 0 20px;
         box-sizing: border-box;
 
-        /* Evitamos que se vaya a la línea de abajo */
         @media (max-width: 900px) {
             padding: 0;
         }
@@ -110,27 +108,10 @@
 
             &::placeholder { color: $color-gris; }
 
-            /* Hacemos la caja de texto más pequeña en móvil */
             @media (max-width: 900px) {
                 padding: 8px 12px;
                 font-size: 0.8em;
             }
-        }
-    }
-
-        &-input { 
-            width: 100%;
-            max-width: 650px;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 25px;
-            background-color: $color-fondo;
-            color: $color-texto;
-            outline: none;
-            font-size: 0.9375em;
-            box-sizing: border-box;
-
-            &::placeholder { color: $color-gris; }
         }
     }
 
@@ -140,7 +121,8 @@
         align-items: center;
 
         @media (max-width: 900px) { padding-right: 0; }
-        @media (max-width: 600px) { gap: 15px; }
+        @media (max-width: 600px) { gap: 10px; }
+        @media (max-width: 380px) { gap: 5px; } /* 👈 Para móviles muy pequeños, los juntamos más */
     }
 
     &__icon {
@@ -151,42 +133,44 @@
 
         &--profile {
             width: 52px; height: 52px;
-            @media (max-width: 600px) { width: 32px; height: 32px; }
+            @media (max-width: 600px) { width: 30px; height: 30px; }
+            @media (max-width: 380px) { width: 24px; height: 24px; } /* 👈 Aún más pequeños */
         }
         &--favorites {
             width: 62px; height: 62px;
-            @media (max-width: 600px) { width: 38px; height: 38px; }
+            @media (max-width: 600px) { width: 35px; height: 35px; }
+            @media (max-width: 380px) { width: 28px; height: 28px; }
         }
         &--cart {
             width: 42px; height: 42px;
-            @media (max-width: 600px) { width: 28px; height: 28px; }
+            @media (max-width: 600px) { width: 26px; height: 26px; }
+            @media (max-width: 380px) { width: 20px; height: 20px; }
         }
     }
     
-    &__action {/*decirle a CSS que las cajitas (.header__dropdown) deben flotar justo debajo de su padre (.header__action) y que, por defecto, deben ser invisibles.*/
-        position: relative; /* Convierte a este contenedor en el "ancla" */
-        display: flex;      /* Mantiene el icono perfectamente alineado */
+    &__action {
+        position: relative; 
+        display: flex;      
         align-items: center;
-        cursor: pointer;    /* Hace que salga la manita al pasar el ratón */
+        cursor: pointer;    
     }
 
     &__dropdown {
         position: absolute;
-        top: 130%; /* Se coloca justo debajo del botón */
-        right: 0; /* Se alinea a la derecha */
+        top: 130%; 
+        right: 0; 
         background-color: $color-fondo;
         color: $color-texto;
         min-width: 220px;
         padding: 15px;
         border-radius: 8px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15); /* Sombra elegante */
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
         z-index: 200;
         
-        /* Magia de invisibilidad y animación */
         opacity: 0;
         visibility: hidden;
-        transform: translateY(15px); /* Empieza un poco más abajo */
-        transition: all 0.3s ease; /* Transición suave */
+        transform: translateY(15px); 
+        transition: all 0.3s ease; 
 
         p {
             font-size: 0.9rem;
@@ -194,11 +178,10 @@
             color: $color-gris;
         }
 
-        /* Esta clase se la pondremos con JavaScript al hacer clic */
         &--active {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0); /* Sube a su posición original */
+            transform: translateY(0); 
         }
     }
 

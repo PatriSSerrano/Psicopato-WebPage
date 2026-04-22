@@ -6,10 +6,12 @@
     padding: 80px 40px;
     background-color: $color-fondo;
     width: 100%;
+    box-sizing: border-box; /* 👈 MAGIA: Evita que el relleno engorde la caja */
 
     @media (max-width: 900px) {
         flex-wrap: wrap;
         gap: 20px;
+        padding: 40px 20px; /* Un poco menos de relleno en móviles */
     }
 
     &__item {
@@ -20,6 +22,7 @@
         justify-content: center;
         text-align: center;
         border-radius: 5px;
+        box-sizing: border-box; /* 👈 Seguridad extra para los cuadritos */
 
         @media (max-width: 900px) { width: 48%; }
         @media (max-width: 600px) { width: 100%; }

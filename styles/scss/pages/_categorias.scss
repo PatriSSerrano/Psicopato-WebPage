@@ -1,18 +1,28 @@
 @use '../abstracts/variables' as *;
 
 .category {
+    @media (max-width: 900px) {
+        flex-direction: column;
+        gap: 40px;
+        padding: 40px 20px;
+    }
+    /*quitamos márgenes laterales para ganar espacio */
+    @media (max-width: 400px) {
+        padding: 20px 10px; 
+    }
     display: flex;
     width: 100%;
     padding: 80px 40px;
     gap: 50px;
     background-color: $color-fondo;
     align-items: stretch;
+    box-sizing: border-box; /* 👈 MAGIA: Adiós al corte derecho */
 
     /* Quitamos el subrayado feo por defecto de los links azules */
     .category__link {
-    text-decoration: none;
-    color: inherit; /* Hereda el gris o naranja del category__item */
-    display: block; /* Hace que toda el área sea "clickeable", no solo las letras */
+        text-decoration: none;
+        color: inherit; 
+        display: block; 
     }
 
     @media (max-width: 900px) {
@@ -22,7 +32,10 @@
     }
 
     &--man {
-        .category__content { margin-left: 70px; }
+        .category__content { 
+            margin-left: 70px; 
+            @media (max-width: 900px) { margin-left: 0; } /* En móvil no necesitamos ese margen izquierdo gigante */
+        }
     }
 
     &__image {
@@ -33,6 +46,9 @@
         @media (max-width: 900px) {
             width: 100%;
             height: 500px;
+        }
+        @media (max-width: 600px) {
+            height: 300px; /* La foto un poco más bajita en móviles pequeños */
         }
     }
 
@@ -49,6 +65,7 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        box-sizing: border-box;
 
         @media (max-width: 900px) { width: 100%; }
     }
@@ -59,8 +76,16 @@
         color: $color-primario;
         margin-bottom: 40px;
         font-weight: normal;
+        /* 👈 MAGIA: Si la palabra no cabe en la pantalla, permite partirla con un guion invisible */
+        overflow-wrap: break-word; 
 
-        @media (max-width: 600px) { font-size: 2.5rem; }
+        @media (max-width: 600px) { 
+            font-size: 2.5rem; 
+            margin-bottom: 20px;
+        }
+        @media (max-width: 380px) { 
+            font-size: 1.8rem; /* 👈 Letra más pequeña para el móvil mini */
+        }
     }
 
     &__columns {
@@ -71,6 +96,8 @@
         padding: 0; margin: 0;
 
         @media (max-width: 900px) { grid-template-columns: repeat(2, 1fr); }
+        /* 👈 EL ARREGLO DE JUVENIL Y MISTER: 1 sola columna en móvil para que se apilen igual que la de mujer */
+        @media (max-width: 600px) { grid-template-columns: 1fr; gap: 30px; }
     }
 
     &__column-title {
@@ -80,6 +107,7 @@
         text-transform: uppercase;
         font-family: $fuente-principal;
         letter-spacing: 1px;
+        overflow-wrap: break-word; /* 👈 Obliga a la palabra a partirse si choca con el borde */
     }
 
     &__list {
@@ -87,12 +115,13 @@
         padding: 0; margin: 0;
     }
 
-    &__item {
+   &__item {
         font-size: 0.875em;
         color: #555555;
         margin-bottom: 12px;
         cursor: pointer;
         transition: color 0.2s;
+        overflow-wrap: break-word; /* 👈 Protección extra para las listas */
 
         &:hover {
             color: $color-primario;

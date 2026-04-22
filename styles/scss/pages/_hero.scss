@@ -3,28 +3,38 @@
 .hero {
     position: relative;
     width: 100%;
-    height: auto;
+    /* Le damos una altura mínima para que el texto SIEMPRE quepa, incluso en móvil */
+    min-height: 400px; 
     display: flex;
+    justify-content: center;
+    align-items: center; /* Esto centra el texto matemáticamente en el medio */
+    overflow: hidden; 
+    background-color: #000; /* Fondo negro de seguridad */
 
     &__images {
         display: flex;
         width: 100%;
+        height: 100%;
+        position: absolute; /* Convertimos las fotos en el "papel pintado" del fondo */
+        top: 0;
+        left: 0;
+        z-index: 1; /* Las mandamos al fondo */
     }
 
     &__image { 
         width: 33.333%;
-        height: auto;
-        display: block;
+        height: 100%;
+        object-fit: cover; /* Estira la foto para que no queden huecos sin deformarla */
+        opacity: 0.7; /* Oscurece un pelín las fotos para que el texto blanco resalte más */
     }
 
     &__content {
-        position: absolute;
-        bottom: 50px;
+        position: relative; /* Ya no flota libremente, se queda anclado al centro */
         width: 100%;
         text-align: center;
-        display: flex;
-        flex-direction: column;
-        z-index: 10;
+        z-index: 10; /* Lo traemos al frente */
+        padding: 0 20px;
+        box-sizing: border-box;
     }
 
     &__title {
@@ -33,9 +43,11 @@
         margin: 0;
         line-height: 1.1;
         text-transform: uppercase;
-        text-shadow: 2px 2px 15px rgba(0,0,0,0.7);
+        text-shadow: 2px 2px 15px rgba(0,0,0,0.9);
+        overflow-wrap: break-word;
 
-        @media (max-width: 600px) { font-size: 2.2rem; }
+        @media (max-width: 900px) { font-size: 2.8rem; }
+        @media (max-width: 600px) { font-size: 1.8rem; } /* Tamaño perfecto para móvil */
     }
 
     &__text {
