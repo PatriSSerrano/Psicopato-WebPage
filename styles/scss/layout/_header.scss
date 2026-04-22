@@ -16,13 +16,13 @@
         justify-content: space-between;
         padding-right: 20px;
 
-        /* ¡La regla de tablet se mete directamente aquí! */
+        /* Le quitamos el wrap para que NO se rompa en dos líneas */
         @media (max-width: 900px) {
-            height: auto;
-            flex-wrap: wrap;
-            padding: 10px 20px;
-            gap: 15px;
+            height: 60px; /* Un poco más bajita en móvil */
+            padding: 0 10px; /* Menos espacio a los lados */
+            gap: 10px; /* Elementos más juntitos */
         }
+    }
 
         @media (max-width: 600px) {
             justify-content: space-between;
@@ -65,9 +65,14 @@
         font-weight: bold;
         font-size: 0.875em;
         border-radius: 4px;
-        text-align: center; /* 👈 Este es el cambio que hemos añadido */
+        text-align: center;
+        white-space: nowrap; /* Evita que el texto del botón se parta en dos */
         
-        @media (max-width: 600px) { display: none; }
+        /* ¡MAGIA! Quitamos el display:none y en su lugar lo hacemos pequeñito */
+        @media (max-width: 900px) { 
+            padding: 6px 10px; 
+            font-size: 0.65em; 
+        }
     }
 
     &__brand {
@@ -84,14 +89,34 @@
         display: flex;
         justify-content: center;
         padding: 0 20px;
-        box-sizing: border-box; /* 👈 Magia antidesbordamiento */
+        box-sizing: border-box;
 
+        /* Evitamos que se vaya a la línea de abajo */
         @media (max-width: 900px) {
-            order: 5;
-            flex: 1 1 100%; /* 👈 En lugar del width: 100% que tenías */
-            margin-top: 5px;
             padding: 0;
         }
+
+        &-input { 
+            width: 100%;
+            max-width: 650px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            background-color: $color-fondo;
+            color: $color-texto;
+            outline: none;
+            font-size: 0.9375em;
+            box-sizing: border-box;
+
+            &::placeholder { color: $color-gris; }
+
+            /* Hacemos la caja de texto más pequeña en móvil */
+            @media (max-width: 900px) {
+                padding: 8px 12px;
+                font-size: 0.8em;
+            }
+        }
+    }
 
         &-input { 
             width: 100%;
