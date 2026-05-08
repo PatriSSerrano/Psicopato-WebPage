@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - PATOS</title>
+    <link rel="icon" href="/static/img/favicon.png" type="image/x-icon"> <!--icono de la página-->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body class="auth-body">
+
+    <header class="header__bar" style="justify-content: center;">
+        <a href="/">
+            <img src="/static/img/logo.png" alt="Logo PATOS" class="header__logo">
+        </a>
+    </header>
+
+    <main class="auth-page">
+        <div class="auth-box">
+            <div class="auth-box__header">
+                <span class="auth-box__link--switch" style="color: #666; text-decoration: none; cursor: default;">Panel de Control</span>
+            </div>
+            
+            <div style="padding: 30px 40px;">
+                <h1 class="auth-box__title">¡Hola, {{.Nombre}}!</h1>
+                <p class="auth-box__subtitle" style="margin-bottom: 20px;">Bienvenido a tu cuenta privada.</p>
+                
+                <div class="profile-info">
+                    <div class="profile-info__item">
+                        <span class="profile-info__label">Nombre completo: </span>
+                        <span class="profile-info__value">{{.Nombre}}</span>
+                    </div>
+                    <div class="profile-info__item">
+                        <span class="profile-info__label">Correo electrónico: </span>
+                        <span class="profile-info__value">{{.Email}}</span>
+                    </div>
+                </div>
+
+                <form action="/logout" method="POST" style="margin-top: 25px;">
+                    <button type="submit" class="auth-form__btn auth-form__btn--danger">Cerrar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

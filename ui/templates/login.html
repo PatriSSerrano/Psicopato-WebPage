@@ -82,6 +82,7 @@
                 type = "toast--success";
                 if (urlParams.get('exito') === 'registro') message = "¡Cuenta creada! Ya puedes iniciar sesión.";
                 if (urlParams.get('exito') === 'login') message = "¡Bienvenido de nuevo a la tienda!";
+                if (urlParams.get('exito') === 'logout') message = "Sesión cerrada correctamente.";
             } else if (urlParams.has('error')) {
                 type = "toast--error";
                 if (urlParams.get('error') === 'credenciales') message = "Credenciales incorrectas. Inténtalo de nuevo.";

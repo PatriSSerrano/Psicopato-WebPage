@@ -13,19 +13,18 @@ func main() {
 	// 1. Configuración
 	store := database.NewUserStore("api/users.jsonl")
 
-	// 2. Cargamos las plantillas por separado
-	tmplLogin, err := template.ParseFiles("ui/templates/login.html")
-	if err != nil {
-		log.Fatalf("error cargando template de login: %v", err)
-	}
+	// Cargamos las plantillas
+tmplLogin, _ := template.ParseFiles("ui/templates/login.html")
+tmplRegister, _ := template.ParseFiles("ui/templates/register.html")
 
-	tmplRegister, err := template.ParseFiles("ui/templates/register.html")
-	if err != nil {
-		log.Fatalf("error cargando template de registro: %v", err)
-	}
+// ¡NUEVO! Cargamos el perfil
+tmplProfile, err := template.ParseFiles("ui/templates/perfil.html")
+if err != nil {
+    log.Fatalf("error cargando template de perfil: %v", err)
+}
 
-	// 3. Inicializamos el handler pasando ambas plantillas
-	userHandler := handlers.NewUserHandler(tmplLogin, tmplRegister, store)
+// Pasamos TODAS las plantillas al Handler (incluyendo el perfil)
+userHandler := handlers.NewUserHandler(tmplLogin, tmplRegister, tmplProfile, store)
 
 	// --- RUTAS --- //
 
@@ -50,6 +49,11 @@ func main() {
 	http.HandleFunc("/procesar-login", userHandler.Login)         // Procesa el inicio de sesión
 	http.HandleFunc("/login", userHandler.ShowLogin)
 	http.HandleFunc("/registro", userHandler.ShowRegister)
+	http.HandleFunc("/logout", userHandler.Logout) // Nueva ruta para cerrar sesión
+
+	// RUTAS PROTEGIDAS (Solo entran si tienen la cookie)
+	http.HandleFunc("/perfil", userHandler.AuthMiddleware(userHandler.ShowProfile))
+	// http.HandleFunc("/admin", userHandler.AuthMiddleware(userHandler.ShowAdmin))
 
 
 		// Usando la raíz del proyecto directamente 

@@ -93,7 +93,9 @@ html, body {
     font-size: 0.65em;
   }
 }
-
+.header__app-btn {
+  /* Escondemos el botón en móviles diminutos para salvar los iconos */
+}
 @media (max-width: 400px) {
   .header__app-btn {
     display: none;
@@ -166,7 +168,7 @@ html, body {
     gap: 5px;
   }
 }
-
+.header__icons { /* 👈 Para móviles muy pequeños, los juntamos más */ }
 .header__icon {
   cursor: pointer;
   transition: transform 0.2s;
@@ -190,7 +192,7 @@ html, body {
     height: 24px;
   }
 }
-
+.header__icon--profile { /* 👈 Aún más pequeños */ }
 .header__icon--favorites {
   width: 62px;
   height: 62px;
@@ -251,7 +253,9 @@ html, body {
   margin-bottom: 10px;
   color: #999999;
 }
-
+.header__dropdown {
+  /* Esta clase se la pondremos con JavaScript al hacer clic */
+}
 .header__dropdown--active {
   opacity: 1;
   visibility: visible;
@@ -381,7 +385,9 @@ footer {
     font-size: 2.5rem;
   }
 }
-
+.hero__title {
+  /* Hacemos la letra más pequeña en móvil para que quepa bien dentro de las fotos */
+}
 @media (max-width: 600px) {
   .hero__title {
     font-size: 1.3rem;
@@ -451,7 +457,9 @@ footer {
     padding: 40px 20px;
   }
 }
-
+.category {
+  /*quitamos márgenes laterales para ganar espacio */
+}
 @media (max-width: 400px) {
   .category {
     padding: 20px 10px;
@@ -487,7 +495,7 @@ footer {
     margin-left: 0;
   }
 }
-
+.category--man .category__content { /* En móvil no necesitamos ese margen izquierdo gigante */ }
 .category__image {
   flex: 1;
   position: relative;
@@ -811,4 +819,44 @@ footer {
     opacity: 1;
     transform: translateY(0);
   }
+}
+.profile-info {
+  background-color: #fafafa;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  padding: 20px;
+}
+.profile-info__item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+.profile-info__item:last-child {
+  margin-bottom: 0;
+}
+.profile-info__label {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+.profile-info__value {
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 500;
+  overflow-wrap: break-word;
+}
+
+.auth-form__btn--danger {
+  background-color: #ef4444;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+.auth-form__btn--danger:hover {
+  background-color: #dc2626;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+}
+.auth-form__btn--danger:active {
+  box-shadow: 0 2px 10px rgba(239, 68, 68, 0.2);
 }/*# sourceMappingURL=main.css.map */

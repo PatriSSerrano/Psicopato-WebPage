@@ -4,6 +4,8 @@ import (
 	"html/template"
 	"net/http"
 	"golang.org/x/crypto/bcrypt"
+	"log"
+	"time"
 
 	"TIENDAPATOS/internal/database"
 	"TIENDAPATOS/internal/models"
@@ -12,13 +14,15 @@ import (
 type UserHandler struct {
 	tmplLogin  *template.Template
 	tmplRegister *template.Template
+	tmplProfile *template.Template
 	store *database.UserStore
 }
 
-func NewUserHandler(tmplLogin *template.Template, tmplRegister *template.Template, store *database.UserStore) *UserHandler {
+func NewUserHandler(tmplLogin *template.Template, tmplRegister *template.Template, tmplProfile *template.Template, store *database.UserStore) *UserHandler {
 	return &UserHandler{
 		tmplLogin:  tmplLogin,
 		tmplRegister: tmplRegister,
+		tmplProfile: tmplProfile,
 		store: store,
 	}
 }
@@ -26,6 +30,34 @@ func NewUserHandler(tmplLogin *template.Template, tmplRegister *template.Templat
 //Métodos de visualización
 func (h *UserHandler) ShowLogin(w http.ResponseWriter, r *http.Request) {
     h.tmplLogin.ExecuteTemplate(w, "login.html", nil)
+}
+
+// Método para mostrar el perfil dinámico
+func (h *UserHandler) ShowProfile(w http.ResponseWriter, r *http.Request) {
+    // 1. Leemos la cookie para saber quién es
+    cookie, err := r.Cookie("session_user")
+    if err != nil {
+        http.Redirect(w, r, "/login?error=no_autorizado", http.StatusSeeOther)
+        return
+    }
+    
+    // 2. Buscamos al usuario en la base de datos (tu JSON)
+    email := cookie.Value
+    user, err := h.store.GetUserByEmail(email)
+    if err != nil {
+        http.Redirect(w, r, "/login?error=no_autorizado", http.StatusSeeOther)
+        return
+    }
+
+    // 3. Empaquetamos los datos dinámicos
+    data := map[string]interface{}{
+        "Nombre": user.Name,
+        "Email":  user.Email,
+    }
+
+    // 4. Inyectamos los datos en la plantilla perfil.html
+    // Fíjate que aquí NO pasamos nil, pasamos 'data'
+    h.tmplProfile.ExecuteTemplate(w, "perfil.html", data)
 }
 
 func (h *UserHandler) ShowRegister(w http.ResponseWriter, r *http.Request) {
@@ -65,52 +97,7 @@ func (h *UserHandler) SubmitForm(w http.ResponseWriter, r *http.Request) {
 	// SI TODO VA BIEN: Redirigimos al login con mensaje de éxito
 	http.Redirect(w, r, "/login?exito=registro", http.StatusSeeOther)
 
-	//COOKIES
-
-	//Crear la Cookie
-    cookie := &http.Cookie{
-        Name:     "sesion",
-        Value:    "usuario_autorizado", // nombre del usuario o un ID
-        Path:     "/",                  // Válida para toda la web
-        MaxAge:   3600,                 // Dura 1 hora (3600 segundos)
-        HttpOnly: true,                 // Seguridad: JS no puede leerla
-    }
-    
-    //Enviar al navegador
-    http.SetCookie(w, cookie)
-
-    //Responder al usuario o redirigirlo
-    w.Write([]byte("Formulario procesado y sesión iniciada"))
-
 }
-
-func zonaProtegida(w http.ResponseWriter, r *http.Request) {
-    // 1. Intentamos leer la cookie
-    cookie, err := r.Cookie("sesion")
-    
-    // 2. Si hay error (no existe la cookie), le denegamos el paso
-    if err == http.ErrNoCookie {
-        http.Error(w, "Acceso denegado: debes rellenar el formulario primero", http.StatusUnauthorized)
-        // Alternativa: redirigirle al formulario con http.Redirect(w, r, "/formulario", http.StatusSeeOther)
-        return
-    }
-
-    // 3. Si llega aquí, es que tiene la cookie. 
-    // Puedes leer el valor: cookie.Value
-    w.Write([]byte("¡Bienvenido a la zona protegida! Tu sesión es: " + cookie.Value))
-}
-
-func cerrarSesion(w http.ResponseWriter, _ *http.Request) {
-    cookie := &http.Cookie{
-        Name:   "sesion",
-        Value:  "",
-        Path:   "/",
-        MaxAge: -1, // Esto le dice al navegador: "¡Bórrala inmediatamente!"
-    }
-    http.SetCookie(w, cookie)
-    w.Write([]byte("Sesión cerrada correctamente"))
-}
-
 // Login procesa el intento de entrada
 func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
@@ -136,6 +123,63 @@ func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+		// Creamos la cookie de sesión
+	cookie := &http.Cookie{
+		Name:     "session_user",
+		Value:    email, // Guardamos el email como identificador
+		Path:     "/",
+		HttpOnly: true, // Seguridad: impide que JavaScript acceda a la cookie
+		MaxAge:   3600, // Dura 1 hora
+		SameSite: http.SameSiteLaxMode,
+	}
+	http.SetCookie(w, cookie)
+	log.Printf("INFO: Cookie de sesión creada para %s", email)
+
+	http.Redirect(w, r, "/?exito=login", http.StatusSeeOther)
+
+
 	// SI EL LOGIN ES CORRECTO: Redirigimos a la página principal
 	http.Redirect(w, r, "/?exito=login", http.StatusSeeOther)
+}
+
+// Middleware para proteger rutas
+func (h *UserHandler) AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+        cookie, err := r.Cookie("session_user")
+        if err != nil {
+            // Si no hay cookie, lo mandamos al login
+            log.Printf("WARN: Intento de acceso no autorizado a %s", r.URL.Path)
+            http.Redirect(w, r, "/login?error=no_autorizado", http.StatusSeeOther)
+            return
+        }
+        
+        // Si hay cookie, dejamos que pase a la siguiente función (next)
+        log.Printf("INFO: Usuario %s accediendo a ruta protegida", cookie.Value)
+        next.ServeHTTP(w, r)
+    }
+}
+
+// Logout cierra la sesión del usuario eliminando la cookie
+func (h *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
+    // Verificamos que sea un método POST por seguridad
+    if r.Method != http.MethodPost {
+        http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
+        return
+    }
+
+    // Sobrescribimos la cookie actual con una caducada
+    cookie := &http.Cookie{
+        Name:     "session_user",
+        Value:    "",
+        Path:     "/",
+        HttpOnly: true,
+        MaxAge:   -1, // Obliga al navegador a borrarla al instante
+        Expires:  time.Now().Add(-1 * time.Hour), // Fecha en el pasado por si acaso
+    }
+    http.SetCookie(w, cookie)
+
+    log.Println("INFO: Un usuario ha cerrado sesión correctamente.")
+
+    // Redirigimos a la página de login con un mensaje de éxito
+    http.Redirect(w, r, "/login?exito=logout", http.StatusSeeOther)
 }
