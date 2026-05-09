@@ -10,33 +10,29 @@ import (
 )
 
 func main() {
-	// 1. Configuración
+	//Configuración
 	store := database.NewUserStore("api/users.jsonl")
 
-	// Cargamos las plantillas
-tmplLogin, _ := template.ParseFiles("ui/templates/login.html")
-tmplRegister, _ := template.ParseFiles("ui/templates/register.html")
-
-// ¡NUEVO! Cargamos el perfil
-tmplProfile, err := template.ParseFiles("ui/templates/perfil.html")
-if err != nil {
-    log.Fatalf("error cargando template de perfil: %v", err)
-}
-
-// Pasamos TODAS las plantillas al Handler (incluyendo el perfil)
-userHandler := handlers.NewUserHandler(tmplLogin, tmplRegister, tmplProfile, store)
+	// Cargamos todos los .html de la carpeta templates
+	// El patrón "ui/templates/*.html" agarra todos los archivos automáticamente
+	tmpl, err := template.ParseGlob("ui/templates/*.html")
+	if err != nil {
+		log.Fatalf("Error cargando templates: %v", err)
+	}
+	// inicializamos Handler
+	userHandler := handlers.NewUserHandler(tmpl, store)
 
 	// --- RUTAS --- //
 
 	// Inicio
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/" {
-			http.NotFound(w, r)
-			return
-		}
-		tmplIndex, _ := template.ParseFiles("ui/templates/index.html")
-		tmplIndex.Execute(w, nil)
-	})
+	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	// 	if r.URL.Path != "/" {
+	// 		http.NotFound(w, r)
+	// 		return
+	// 	}
+	// 	tmplIndex, _ := template.ParseFiles("ui/templates/index.html")
+	// 	tmplIndex.Execute(w, nil)
+	// })
 
 	// Chaquetas
 	http.HandleFunc("/chaquetas", func(w http.ResponseWriter, r *http.Request) {
@@ -44,16 +40,16 @@ userHandler := handlers.NewUserHandler(tmplLogin, tmplRegister, tmplProfile, sto
 		tmplChaquetas.Execute(w, nil)
 	})
 
+	// 3. RUTAS (Asegúrate de que la raíz "/" apunte a un handler, no a un FileServer)
+	http.HandleFunc("/", userHandler.ShowHome)
+	http.HandleFunc("/login", userHandler.ShowLogin)
+	http.HandleFunc("/registro", userHandler.ShowRegister)
+	http.HandleFunc("/perfil", userHandler.AuthMiddleware(userHandler.ShowProfile))
+	// http.HandleFunc("/admin", userHandler.AuthMiddleware(userHandler.ShowAdmin))
 	// RUTAS DE USUARIO
 	http.HandleFunc("/procesar-registro", userHandler.SubmitForm) // Guarda en JSONL
 	http.HandleFunc("/procesar-login", userHandler.Login)         // Procesa el inicio de sesión
-	http.HandleFunc("/login", userHandler.ShowLogin)
-	http.HandleFunc("/registro", userHandler.ShowRegister)
 	http.HandleFunc("/logout", userHandler.Logout) // Nueva ruta para cerrar sesión
-
-	// RUTAS PROTEGIDAS (Solo entran si tienen la cookie)
-	http.HandleFunc("/perfil", userHandler.AuthMiddleware(userHandler.ShowProfile))
-	// http.HandleFunc("/admin", userHandler.AuthMiddleware(userHandler.ShowAdmin))
 
 
 		// Usando la raíz del proyecto directamente 

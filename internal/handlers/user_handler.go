@@ -12,24 +12,20 @@ import (
 )
 
 type UserHandler struct {
-	tmplLogin  *template.Template
-	tmplRegister *template.Template
-	tmplProfile *template.Template
+	templates *template.Template // Cargaremos todos los archivos aquí
 	store *database.UserStore
 }
 
-func NewUserHandler(tmplLogin *template.Template, tmplRegister *template.Template, tmplProfile *template.Template, store *database.UserStore) *UserHandler {
+func NewUserHandler(tmpl *template.Template, store *database.UserStore) *UserHandler {
 	return &UserHandler{
-		tmplLogin:  tmplLogin,
-		tmplRegister: tmplRegister,
-		tmplProfile: tmplProfile,
+		templates: tmpl,
 		store: store,
 	}
 }
 
 //Métodos de visualización
 func (h *UserHandler) ShowLogin(w http.ResponseWriter, r *http.Request) {
-    h.tmplLogin.ExecuteTemplate(w, "login.html", nil)
+    h.templates.ExecuteTemplate(w, "login.html", nil)
 }
 
 // Método para mostrar el perfil dinámico
@@ -57,11 +53,11 @@ func (h *UserHandler) ShowProfile(w http.ResponseWriter, r *http.Request) {
 
     // 4. Inyectamos los datos en la plantilla perfil.html
     // Fíjate que aquí NO pasamos nil, pasamos 'data'
-    h.tmplProfile.ExecuteTemplate(w, "perfil.html", data)
+    h.templates.ExecuteTemplate(w, "perfil.html", data)
 }
 
 func (h *UserHandler) ShowRegister(w http.ResponseWriter, r *http.Request) {
-    h.tmplRegister.ExecuteTemplate(w, "register.html", nil)
+    h.templates.ExecuteTemplate(w, "register.html", nil)
 }
 
 // SubmitForm procesa el registro de nuevos usuarios
@@ -182,4 +178,22 @@ func (h *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
 
     // Redirigimos a la página de login con un mensaje de éxito
     http.Redirect(w, r, "/login?exito=logout", http.StatusSeeOther)
+}
+
+func (h *UserHandler) ShowHome(w http.ResponseWriter, r *http.Request) {
+    cookie, err := r.Cookie("session_user")
+    isLoggedIn := (err == nil)
+
+    data := map[string]interface{}{
+        "Titulo":     "Inicio - Tienda de Patos",
+        "Logueado":   isLoggedIn,
+        "UserEmail":  "",
+    }
+    
+    if isLoggedIn {
+        data["UserEmail"] = cookie.Value
+    }
+
+    // Usamos ExecuteTemplate especificando el archivo
+    h.templates.ExecuteTemplate(w, "index.html", data)
 }

@@ -39,19 +39,25 @@
             <div class="header__search">
                 <input type="text" placeholder="Buscar articulos..." class="header__search-input">
             </div>
-
                 <div class="header__icons">
                     <div class="header__action">
-                        <picture>
-                            <source srcset="/static/img/perfil-opt.avif" type="image/avif">
-                            <img src="/static/img/perfil.png" alt="Perfil" class="header__icon header__icon--profile" id="btn-profile">
-                        </picture>
-                        <div class="header__dropdown" id="drop-profile">
-                            <p><strong>¡Hola!</strong></p>
-                            <a href="/login" class="header__dropdown-link">Iniciar sesión</a>
-                            <a href="/registro" class="header__dropdown-link">Crear cuenta</a>
-                        </div>
+                        {{if .Logueado}}
+                            <picture>
+                            <a href="/perfil" title="Mi Perfil ({{.UserEmail}})">
+                                <source srcset="/static/img/perfil-opt.avif" type="image/avif">
+                                <img src="/static/img/perfil.png" alt="Perfil" class="header__icon header__icon--profile" id="btn-profile">
+                            </a>
+                            </picture>
+                        {{else}}
+                            <picture>
+                            <a href="/login" title="Iniciar Sesión">
+                                <source srcset="/static/img/perfil-opt.avif" type="image/avif">
+                                <img src="/static/img/perfil.png" alt="Perfil" class="header__icon header__icon--profile" id="btn-profile">
+                            </a>
+                            </picture>
+                        {{end}}
                     </div>
+                    
 
                     <div class="header__action">
                         <picture>
@@ -74,7 +80,7 @@
                         </div>
                     </div>
                 </div>
-        </div>
+            </div>
     </header>
 
     <section class="hero">
