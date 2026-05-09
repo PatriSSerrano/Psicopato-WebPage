@@ -1,0 +1,168 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="es" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{block "title" .}}PATOS - Tienda Oficial{{end}}</title>
+
+    <link rel="icon" href="/static/img/favicon.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="header__bar">
+            
+            <div class="header__logo-box">
+                <a href="/">
+                    <picture>
+                        <source srcset="/static/img/logo-opt.avif" type="image/avif">
+                        <img src="/static/img/logo.png" alt="Logo de la marca" class="header__logo">
+                    </picture>
+                </a>
+            </div>
+
+            <div class="header__action">
+                <a href="#" class="header__app-btn" id="btn-app">DESCARGAR APP</a>
+                <div class="header__dropdown" id="drop-app">
+                    <p>Elige tu plataforma:</p>
+                    <a href="#" class="header__dropdown-link">Descargar para iOS</a>
+                    <a href="#" class="header__dropdown-link">Descargar para Android</a>
+                </div>
+            </div>
+
+            <div class="header__search">
+                <input type="text" placeholder="Buscar articulos..." class="header__search-input">
+            </div>
+            
+            <div class="header__icons">
+                <div class="header__action">
+                    {{if .Logueado}}
+                        <picture>
+                        <a href="/perfil" title="Mi Perfil ({{.UserEmail}})">
+                            <source srcset="/static/img/perfil-opt.avif" type="image/avif">
+                            <img src="/static/img/perfil.png" alt="Perfil" class="header__icon header__icon--profile" id="btn-profile">
+                        </a>
+                        </picture>
+                    {{else}}
+                        <picture>
+                        <a href="/login" title="Iniciar Sesión">
+                            <source srcset="/static/img/perfil-opt.avif" type="image/avif">
+                            <img src="/static/img/perfil.png" alt="Perfil" class="header__icon header__icon--profile" id="btn-profile">
+                        </a>
+                        </picture>
+                    {{end}}
+                </div>
+                
+                <div class="header__action">
+                    <picture>
+                        <source srcset="/static/img/favoritos-opt.avif" type="image/avif">
+                        <img src="/static/img/favoritos.png" alt="Favoritos" class="header__icon header__icon--favorites" id="btn-fav">
+                    </picture>
+                    <div class="header__dropdown" id="drop-fav">
+                        <p>Aún no tienes favoritos. ¡Explora la tienda!</p>
+                    </div>
+                </div>
+
+                <div class="header__action">
+                    <picture>
+                        <source srcset="/static/img/cesta-opt.avif" type="image/avif">
+                        <img src="/static/img/cesta.png" alt="Carrito de compras" class="header__icon header__icon--cart" id="btn-cart">
+                    </picture>
+                    <div class="header__dropdown" id="drop-cart">
+                        <p>Tu carrito está vacío.</p>
+                        <a href="#" class="header__dropdown-link">Ir a pagar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        {{block "content" .}}{{end}}
+    </main>
+
+    <footer>
+        <div class="footer__content">
+            <h2 class="footer__title">Más información. Hablemos.</h2>
+            <address class="footer__address">
+                <p class="footer__text">Contáctenos para comentarios, consultas y colaboraciones.</p>
+                <a href="mailto:#" class="footer__link">Email</a>
+            </address>
+        </div>
+    </footer>
+
+    <script>
+        function configurarDropdown(idBoton, idCaja) {
+            const boton = document.getElementById(idBoton);
+            const caja = document.getElementById(idCaja);
+
+            if(boton && caja) {
+                boton.addEventListener('click', function(evento) {
+                    evento.preventDefault(); 
+                    const estaAbierta = caja.classList.contains('header__dropdown--active');
+                    document.querySelectorAll('.header__dropdown').forEach(drop => {
+                        drop.classList.remove('header__dropdown--active');
+                    });
+                    if (!estaAbierta) {
+                        caja.classList.add('header__dropdown--active');
+                    }
+                });
+            }
+        }
+        configurarDropdown('btn-app', 'drop-app');
+        configurarDropdown('btn-profile', 'drop-profile');
+        configurarDropdown('btn-fav', 'drop-fav');
+        configurarDropdown('btn-cart', 'drop-cart');
+
+        document.addEventListener('click', function(evento) {
+            if (!evento.target.closest('.header__action')) {
+                document.querySelectorAll('.header__dropdown').forEach(drop => {
+                    drop.classList.remove('header__dropdown--active');
+                });
+            }
+        });
+    </script>
+
+    <div id="toast-notif" class="toast"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const toast = document.getElementById('toast-notif');
+            let message = "";
+            let type = "";
+
+            if (urlParams.has('exito')) {
+                type = "toast--success";
+                if (urlParams.get('exito') === 'registro') message = "¡Cuenta creada! Ya puedes iniciar sesión.";
+                if (urlParams.get('exito') === 'login') message = "¡Bienvenido de nuevo a la tienda!";
+                if (urlParams.get('exito') === 'logout') message = "Has cerrado sesión correctamente. ¡Hasta pronto!";
+            } else if (urlParams.has('error')) {
+                type = "toast--error";
+                if (urlParams.get('error') === 'credenciales') message = "Credenciales incorrectas. Inténtalo de nuevo.";
+                if (urlParams.get('error') === 'servidor') message = "Hubo un error al procesar tu solicitud.";
+                if (urlParams.get('error') === 'no_autorizado') message = "Debes iniciar sesión para ver esta página.";
+            }
+
+            if (message !== "") {
+                toast.textContent = message;
+                toast.classList.add(type);
+                toast.classList.add('toast--show');
+
+                setTimeout(() => {
+                    toast.classList.remove('toast--show');
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }, 4000);
+            }
+        });
+    </script>
+</body>
+</html>
+{{end}}

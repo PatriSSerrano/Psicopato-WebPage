@@ -1,90 +1,7 @@
-<!DOCTYPE html>
-<html lang="es" >
+{{define "title"}}PATOS - Tienda Oficial{{end}}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PATOS - Tienda Oficial</title>
-
-    <link rel="icon" href="/static/img/favicon.png" type="image/x-icon"> <!--icono de la página-->
-    <!--importar fuentes tipográficas (letras) de Google Fonts-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!--Decarga de las fuentes: "Playfair Display" & "Syncopate"-->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Syncopate:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/main.css"><!-- Incluir css mediante hoja de estilo -->
-</head>
-
-<body>
-
-    <header>
-        <div class="header__bar">
-            
-            <div class="header__logo-box">
-                <picture>
-                    <source srcset="/static/img/logo-opt.avif" type="image/avif">
-                    <img src="/static/img/logo.png" alt="Logo de la marca" class="header__logo">
-                </picture>
-            </div>
-
-            <div class="header__action">
-                <a href="#" class="header__app-btn" id="btn-app">DESCARGAR APP</a>
-                <div class="header__dropdown" id="drop-app">
-                    <p>Elige tu plataforma:</p>
-                    <a href="#" class="header__dropdown-link">Descargar para iOS</a>
-                    <a href="#" class="header__dropdown-link">Descargar para Android</a>
-                </div>
-            </div>
-
-            <div class="header__search">
-                <input type="text" placeholder="Buscar articulos..." class="header__search-input">
-            </div>
-                <div class="header__icons">
-                    <div class="header__action">
-                        {{if .Logueado}}
-                            <picture>
-                            <a href="/perfil" title="Mi Perfil ({{.UserEmail}})">
-                                <source srcset="/static/img/perfil-opt.avif" type="image/avif">
-                                <img src="/static/img/perfil.png" alt="Perfil" class="header__icon header__icon--profile" id="btn-profile">
-                            </a>
-                            </picture>
-                        {{else}}
-                            <picture>
-                            <a href="/login" title="Iniciar Sesión">
-                                <source srcset="/static/img/perfil-opt.avif" type="image/avif">
-                                <img src="/static/img/perfil.png" alt="Perfil" class="header__icon header__icon--profile" id="btn-profile">
-                            </a>
-                            </picture>
-                        {{end}}
-                    </div>
-                    
-
-                    <div class="header__action">
-                        <picture>
-                            <source srcset="/static/img/favoritos-opt.avif" type="image/avif">
-                            <img src="/static/img/favoritos.png" alt="Favoritos" class="header__icon header__icon--favorites" id="btn-fav">
-                        </picture>
-                        <div class="header__dropdown" id="drop-fav">
-                            <p>Aún no tienes favoritos. ¡Explora la tienda!</p>
-                        </div>
-                    </div>
-
-                    <div class="header__action">
-                        <picture>
-                            <source srcset="/static/img/cesta-opt.avif" type="image/avif">
-                            <img src="/static/img/cesta.png" alt="Carrito de compras" class="header__icon header__icon--cart" id="btn-cart">
-                        </picture>
-                        <div class="header__dropdown" id="drop-cart">
-                            <p>Tu carrito está vacío.</p>
-                            <a href="#" class="header__dropdown-link">Ir a pagar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </header>
-
+{{define "content"}}
     <section class="hero">
-        
         <div class="hero__images">
             <picture>
                 <source srcset="/static/img/modelo1.avif" type="image/avif">
@@ -103,15 +20,14 @@
         </div>
 
         <div class="hero__content">
-    <h1 class="hero__title">
-        <span class="hero__text hero__text--pastel">AQUÍ TENEMOS ROPA</span><br> <!-- usamos span para que haya solo un h1 -->
-        <span class="hero__text hero__text--orange">PA TOS</span>
-    </h1>
-</div>
-
+            <h1 class="hero__title">
+                <span class="hero__text hero__text--pastel">AQUÍ TENEMOS ROPA</span><br>
+                <span class="hero__text hero__text--orange">PA TOS</span>
+            </h1>
+        </div>
     </section>
 
-<section class="benefits">
+    <section class="benefits">
         <div class="benefits__item benefits__item--odd">
             <p>¿Acabas de llegar? Aprovecha tu descuento de bienvenida.</p>
         </div>
@@ -126,71 +42,62 @@
         </div>
     </section>
 
-<section class="category">
-        
-    <figure class="category__image">
-        <img src="/static/img/foto_mujer.png" alt="Categoría Mujer" class="category__img">
-    </figure>
+    <section class="category">
+        <figure class="category__image">
+            <img src="/static/img/foto_mujer.png" alt="Categoría Mujer" class="category__img">
+        </figure>
 
-    <div class="category__content">
-        <h2 class="category__title">Categoría Mujer</h2>
-        
-        <ul class="category__columns">
-            
-            <li class="category__column">
-                <h3 class="category__column-title">NIÑA</h3>
-                <ul class="category__list">
-                    <li class="category__item">Abrigos</li>
-                    <li class="category__item">
-                    <a href="/chaquetas" class="category__link">Chaquetas</a>
-                    </li>
-                    <li class="category__item">Camisas</li>
-                    <li class="category__item">Pantalones</li>
-                    <li class="category__item">Deporte</li>
-                    <li class="category__item">Trajes</li>
-                    <li class="category__item">Accesorios</li>
-                    <li class="category__item">Vaqueros</li>
-                    <li class="category__item">Bisutería</li>
-                    <li class="category__item">Vestidos</li>
-                    <li class="category__item">Blusas</li>
-                    <li class="category__item">Faldas</li>
-                    <li class="category__item">Tops</li>
-                    <li class="category__item">Zapatos</li>
-                    <li class="category__item">Fiesta</li>
-                </ul>
-            </li>
+        <div class="category__content">
+            <h2 class="category__title">Categoría Mujer</h2>
+            <ul class="category__columns">
+                <li class="category__column">
+                    <h3 class="category__column-title">NIÑA</h3>
+                    <ul class="category__list">
+                        <li class="category__item">Abrigos</li>
+                        <li class="category__item"><a href="/chaquetas" class="category__link">Chaquetas</a></li>
+                        <li class="category__item">Camisas</li>
+                        <li class="category__item">Pantalones</li>
+                        <li class="category__item">Deporte</li>
+                        <li class="category__item">Trajes</li>
+                        <li class="category__item">Accesorios</li>
+                        <li class="category__item">Vaqueros</li>
+                        <li class="category__item">Bisutería</li>
+                        <li class="category__item">Vestidos</li>
+                        <li class="category__item">Blusas</li>
+                        <li class="category__item">Faldas</li>
+                        <li class="category__item">Tops</li>
+                        <li class="category__item">Zapatos</li>
+                        <li class="category__item">Fiesta</li>
+                    </ul>
+                </li>
 
-            <li class="category__column">
-                <h3 class="category__column-title">JUVENIL</h3>
-                <ul class="category__list">
-                    <li class="category__item">Abrigos</li><li class="category__item">Chaquetas</li><li class="category__item">Camisas</li><li class="category__item">Pantalones</li><li class="category__item">Deporte</li><li class="category__item">Trajes</li><li class="category__item">Accesorios</li><li class="category__item">Vaqueros</li><li class="category__item">Bisutería</li><li class="category__item">Vestidos</li><li class="category__item">Blusas</li><li class="category__item">Faldas</li><li class="category__item">Tops</li><li class="category__item">Zapatos</li><li class="category__item">Fiesta</li>
-                </ul>
-            </li>
+                <li class="category__column">
+                    <h3 class="category__column-title">JUVENIL</h3>
+                    <ul class="category__list">
+                        <li class="category__item">Abrigos</li><li class="category__item">Chaquetas</li><li class="category__item">Camisas</li><li class="category__item">Pantalones</li><li class="category__item">Deporte</li><li class="category__item">Trajes</li><li class="category__item">Accesorios</li><li class="category__item">Vaqueros</li><li class="category__item">Bisutería</li><li class="category__item">Vestidos</li><li class="category__item">Blusas</li><li class="category__item">Faldas</li><li class="category__item">Tops</li><li class="category__item">Zapatos</li><li class="category__item">Fiesta</li>
+                    </ul>
+                </li>
 
-            <li class="category__column">
-                <h3 class="category__column-title">ADULTA</h3>
-                <ul class="category__list">
-                    <li class="category__item">Abrigos</li><li class="category__item">Chaquetas</li><li class="category__item">Camisas</li><li class="category__item">Pantalones</li><li class="category__item">Deporte</li><li class="category__item">Trajes</li><li class="category__item">Accesorios</li><li class="category__item">Vaqueros</li><li class="category__item">Bisutería</li><li class="category__item">Vestidos</li><li class="category__item">Blusas</li><li class="category__item">Faldas</li><li class="category__item">Tops</li><li class="category__item">Zapatos</li><li class="category__item">Fiesta</li>
-                </ul>
-            </li>
+                <li class="category__column">
+                    <h3 class="category__column-title">ADULTA</h3>
+                    <ul class="category__list">
+                        <li class="category__item">Abrigos</li><li class="category__item">Chaquetas</li><li class="category__item">Camisas</li><li class="category__item">Pantalones</li><li class="category__item">Deporte</li><li class="category__item">Trajes</li><li class="category__item">Accesorios</li><li class="category__item">Vaqueros</li><li class="category__item">Bisutería</li><li class="category__item">Vestidos</li><li class="category__item">Blusas</li><li class="category__item">Faldas</li><li class="category__item">Tops</li><li class="category__item">Zapatos</li><li class="category__item">Fiesta</li>
+                    </ul>
+                </li>
 
-            <li class="category__column">
-                <h3 class="category__column-title">MISS</h3>
-                <ul class="category__list">
-                    <li class="category__item">Abrigos</li><li class="category__item">Chaquetas</li><li class="category__item">Camisas</li><li class="category__item">Pantalones</li><li class="category__item">Deporte</li><li class="category__item">Trajes</li><li class="category__item">Accesorios</li><li class="category__item">Vaqueros</li><li class="category__item">Bisutería</li><li class="category__item">Vestidos</li><li class="category__item">Blusas</li><li class="category__item">Faldas</li><li class="category__item">Tops</li><li class="category__item">Zapatos</li><li class="category__item">Fiesta</li>
-                </ul>
-            </li>
-            
-        </ul>
-    </div>
-
-</section>
+                <li class="category__column">
+                    <h3 class="category__column-title">MISS</h3>
+                    <ul class="category__list">
+                        <li class="category__item">Abrigos</li><li class="category__item">Chaquetas</li><li class="category__item">Camisas</li><li class="category__item">Pantalones</li><li class="category__item">Deporte</li><li class="category__item">Trajes</li><li class="category__item">Accesorios</li><li class="category__item">Vaqueros</li><li class="category__item">Bisutería</li><li class="category__item">Vestidos</li><li class="category__item">Blusas</li><li class="category__item">Faldas</li><li class="category__item">Tops</li><li class="category__item">Zapatos</li><li class="category__item">Fiesta</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
 
     <section class="category category--man">
-        
         <div class="category__content">
             <h2 class="category__title">Categoría Hombre</h2>
-            
             <ul class="category__columns">
                 <li class="category__column">
                     <h3 class="category__column-title">NIÑO</h3>
@@ -221,102 +128,9 @@
                 </li>
             </ul>            
         </div>
-
         <figure class="category__image">
             <img src="/static/img/foto_hombre.png" alt="Categoría Hombre" class="category__img">
         </figure>
-
     </section>
-
-    <footer>
-        <div class="footer__content">
-            <h2 class="footer__title">Más información. Hablemos.</h2>
-            <address class="footer__address">
-                <p class="footer__text">Contáctenos para comentarios, consultas y colaboraciones.</p>
-                <a href="mailto:#" class="footer__link">Email</a>
-            </address>
-        </div>
-    </footer>
-
-<!--Para que al hacer clic se ponga la clase --active (y la cajita aparezca), necesitamos un script.-->
-    <script>
-        // 1. Función para abrir y cerrar las cajas
-        function configurarDropdown(idBoton, idCaja) {
-            const boton = document.getElementById(idBoton);
-            const caja = document.getElementById(idCaja);
-
-            if(boton && caja) {
-                boton.addEventListener('click', function(evento) {
-                    evento.preventDefault(); // Evita que la página salte hacia arriba
-                    
-                    // Si la caja ya está abierta, la cerramos
-                    const estaAbierta = caja.classList.contains('header__dropdown--active');
-                    
-                    // Primero cerramos TODAS las cajas por si había otra abierta
-                    document.querySelectorAll('.header__dropdown').forEach(drop => {
-                        drop.classList.remove('header__dropdown--active');
-                    });
-
-                    // Si NO estaba abierta, la abrimos
-                    if (!estaAbierta) {
-                        caja.classList.add('header__dropdown--active');
-                    }
-                });
-            }
-        }
-
-        // 2. Conectamos cada botón con su caja oculta
-        configurarDropdown('btn-app', 'drop-app');
-        configurarDropdown('btn-profile', 'drop-profile');
-        configurarDropdown('btn-fav', 'drop-fav');
-        configurarDropdown('btn-cart', 'drop-cart');
-
-        // 3. Un toque pro: Cerrar las cajas si el usuario hace clic fuera de ellas
-        document.addEventListener('click', function(evento) {
-            if (!evento.target.closest('.header__action')) {
-                document.querySelectorAll('.header__dropdown').forEach(drop => {
-                    drop.classList.remove('header__dropdown--active');
-                });
-            }
-        });
-    </script>
-
-    <div id="toast-notif" class="toast"></div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const toast = document.getElementById('toast-notif');
-            
-            let message = "";
-            let type = "";
-
-            // Revisar qué mensaje viene en la URL
-            if (urlParams.has('exito')) {
-                type = "toast--success";
-                if (urlParams.get('exito') === 'registro') message = "¡Cuenta creada! Ya puedes iniciar sesión.";
-                if (urlParams.get('exito') === 'login') message = "¡Bienvenido de nuevo a la tienda!";
-            } else if (urlParams.has('error')) {
-                type = "toast--error";
-                if (urlParams.get('error') === 'credenciales') message = "Credenciales incorrectas. Inténtalo de nuevo.";
-                if (urlParams.get('error') === 'servidor') message = "Hubo un error al procesar tu solicitud.";
-            }
-
-            // Si hay mensaje, mostrar el pop-up y ocultarlo a los 4 segundos
-            if (message !== "") {
-                toast.textContent = message;
-                toast.classList.add(type);
-                toast.classList.add('toast--show');
-
-                setTimeout(() => {
-                    toast.classList.remove('toast--show');
-                    // Opcional: Limpiar la URL para que no vuelva a salir al recargar
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                }, 4000);
-            }
-        });
-    </script>
-</body>
-</html>
-
+{{end}}
 
